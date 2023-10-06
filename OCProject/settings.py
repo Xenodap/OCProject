@@ -4,7 +4,8 @@ ko_formats.DATETIME_FORMAT='Y-m-d G:i:s'
 import  MySQLdb
 from pathlib import Path
 
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
+TEMPLATE_DIR=os.path.join(BASE_DIR, '../board/templates')
 
 SECRET_KEY = "django-insecure-v!790rt+)-zin6u@vp4#6om6yzv)3#0-)c+%gykl&fxe9t-v38"
 
@@ -43,8 +44,7 @@ ROOT_URLCONF = "OCProject.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [BASE_DIR / 'templates']
-        ,
+        "DIRS": [TEMPLATE_DIR,],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -110,6 +110,13 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = "static/"
+
+STATIC_DIR=os.path.join(BASE_DIR,'static')
+
+STATICFILES_DIRS=[
+    STATIC_DIR,
+]
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field

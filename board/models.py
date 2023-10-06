@@ -3,10 +3,10 @@ from datetime import  datetime
 
 class Board(models.Model):
     idx=models.AutoField(primary_key=True)
-    writer=models.CharField(null=False,max_length=50)
-    title=models.CharField(null=False,max_length=120)
+    writer=models.CharField(null=False,max_length=25)
+    title=models.CharField(null=False,max_length=100)
     hit=models.IntegerField(default=0)
-    content=models.TextField(null=False)
+    content=models.TextField(null=False,max_length=1000)
     post_date=models.DateTimeField(default=datetime.now,blank=True)
     filename=models.CharField(null=True,blank=True,default="",max_length=500)
     filesize=models.IntegerField(default=0)
