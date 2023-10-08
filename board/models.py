@@ -4,7 +4,7 @@ from datetime import  datetime
 class Board(models.Model):
     idx=models.AutoField(primary_key=True)
     writer=models.CharField(null=False,max_length=25)
-    title=models.CharField(null=False,max_length=100)
+    title=models.CharField(null=False,max_length=50)
     hit=models.IntegerField(default=0)
     content=models.TextField(null=False,max_length=1000)
     post_date=models.DateTimeField(default=datetime.now,blank=True)
