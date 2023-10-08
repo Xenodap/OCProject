@@ -1,6 +1,7 @@
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 from board import views
+
 
 urlpatterns = [
     path('',views.home),
@@ -20,6 +21,7 @@ urlpatterns = [
     path('reply_insert/',views.reply_insert),
     path('update/',views.update),
     path('delete/',views.delete),
+    path('accounts/',include('allauth.urls')),
 
 
 
