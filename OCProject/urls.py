@@ -1,10 +1,12 @@
 from django.contrib import admin
-from django.urls import path
+from django.urls import path,include
 from board import views
 
 urlpatterns = [
-    path('',views.home),
+    path('home/',views.home),
     path('admin/', admin.site.urls),
+    # restapi 설정하기
+    path('api/',include('rest_framework.urls')),
 
 
     path('signup/',views.signup),

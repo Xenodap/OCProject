@@ -1,5 +1,7 @@
 import os
 from django.conf.locale.ko import formats as ko_formats
+from whitenoise import middleware
+
 ko_formats.DATETIME_FORMAT='Y-m-d G:i:s'
 import  MySQLdb
 from pathlib import Path
@@ -24,8 +26,9 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    'bootstrap4',
+
     'board',
+    'rest_framework',
 
     # 'allauth',
     # 'allauth.account',
@@ -35,6 +38,17 @@ INSTALLED_APPS = [
 
 
 ]
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
+    ],
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 10
+}
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -44,6 +58,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    # 소셜로그인
     'allauth.account.middleware.AccountMiddleware',
 ]
 
@@ -75,7 +90,7 @@ DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.mysql",
         "NAME": 'ocprojectdb',
-        'USER':'pgm',
+        'USER':'root',
         'PASSWORD':'1234',
         'HOST':'localhost',
         'PORT':'3306',
