@@ -57,7 +57,7 @@ def logout(request):
 def list(request):
     boardCount=Board.objects.count()
     boardList=Board.objects.all().order_by("-idx")
-    return render(request,"board/ist.html",
+    return render(request,"board/list.html",
                   {"boardList":boardList,"boardCount":boardCount})
 
 def write(request):
