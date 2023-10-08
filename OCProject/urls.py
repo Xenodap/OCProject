@@ -16,5 +16,11 @@ urlpatterns = [
     path('list/',views.list),
     path('write/',views.write),
     path('insert/',views.insert),
+    path('download/',views.download),
+    path('detail/',views.detail),
+    path('reply_insert/',views.reply_insert),
+    path('update/',views.update),
+    path('delete/',views.delete),
+
 
 ]

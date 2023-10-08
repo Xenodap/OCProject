@@ -30,7 +30,7 @@
     {% if dto.filesize > 0 %}
     <a href="/download?idx={{ dto.idx }}">{{ dto.filename }}({{ fsize }}KB)</a>
     {% endif %}
-    <input type="file" name="file" ></div>
+<input type="file" name="file" >←첨부파일이 변경됩니다</div>
 <div style="width:800px">조회수 : {{ dto.hit }} </div>
 <div style="width:800px">다운로드 수 : {{ dto.down }}</div>
 <div style="width:800px">게시물 등록일  : {{ dto.post_date }}</div>
@@ -43,7 +43,7 @@
 <button type="button"onclick="del()">삭제</button>
 </div>
 </form>
-<h2>댓글 영역</h2>
+<h2>댓글</h2>
 <form method="post" action="/reply_insert/">
     {% csrf_token %}
     <div>작성자:<input type="text" name="writer" placeholder="작성자"></div>
@@ -51,10 +51,10 @@
     <input type="hidden" name="idx"value="{{ dto.idx }}">
     <div><button type="submit">댓글등록</button> </div>
 </form>
-<h2>댓글 리스트 영역</h2>
+<h2>댓글 리스트</h2>
 {% for comment in commentList %}
-    <div>{{ comment.content }}</div>
     <div>{{ comment.writer }}{{ comment.post_date }}</div>
+    <div>{{ comment.content }}</div>
 {% endfor %}
 </body>
 </html>

@@ -17,7 +17,7 @@ class Board(models.Model):
     def down_up(self):
         self.down +=1
 
-class Comment(models.Model):
+class comment(models.Model):
     idx=models.AutoField(primary_key=True)
     board_idx=models.IntegerField(null=False)
     writer=models.CharField(null=False,max_length=50)
