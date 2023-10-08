@@ -30,7 +30,10 @@
     {% if dto.filesize > 0 %}
     <a href="/download?idx={{ dto.idx }}">{{ dto.filename }}({{ fsize }}KB)</a>
     {% endif %}
-<input type="file" name="file" >←첨부파일이 변경됩니다</div>
+
+<div>{% if dto.writer == user.username %}
+        <input type="file" name="file" >←첨부파일이 변경됩니다</div>
+    {% endif %}</div>
 <div style="width:800px">조회수 : {{ dto.hit }} </div>
 <div style="width:800px">다운로드 수 : {{ dto.down }}</div>
 <div style="width:800px">게시물 등록일  : {{ dto.post_date }}</div>
@@ -39,8 +42,10 @@
 
 <div>
 <button type="button"onclick="home()">목록</button>
-<button type="button"onclick="update()">수정</button>
-<button type="button"onclick="del()">삭제</button>
+    {% if dto.writer == user.username %}
+        <button type="button"onclick="update()">수정</button>
+        <button type="button"onclick="del()">삭제</button>
+    {% endif %}
 </div>
 </form>
 <h2>댓글</h2>

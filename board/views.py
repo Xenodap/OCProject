@@ -9,10 +9,6 @@ import os
 UPLOAD_DIR='c:/ocupload/'
 
 
-# Create your views here.
-
-
-
 def login(request):#로그인
     if request.method=="POST":
         username=request.POST['username']
