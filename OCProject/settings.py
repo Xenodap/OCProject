@@ -34,6 +34,9 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.naver',
+    'allauth.socialaccount.providers.kakao',
+    'allauth.socialaccount.providers.facebook',
+    'allauth.socialaccount.providers.google',
 
 ]
 REST_FRAMEWORK = {
@@ -53,7 +56,7 @@ AUTHENTICATION_BACKENDS=[
     'allauth.account.auth_backends.AuthenticationBackend',
 ]
 
-SITE_ID=1
+SITE_ID=4
 LOGIN_REDIRECT_URL="/"
 
 MIDDLEWARE = [
@@ -85,6 +88,10 @@ TEMPLATES = [
         },
     },
 ]
+
+SOCIALACCOUNT_LOGIN_ON_GET=True
+ACCOUNT_LOGOUT_REDIRECT_URL='/'
+ACCOUNT_LOGOUT_ON_GET=True
 
 WSGI_APPLICATION = "OCProject.wsgi.application"
 
@@ -148,4 +155,17 @@ STATICFILES_DIRS=[
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
+
+
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'SCOPE': [
+            'profile',
+            'email',
+        ],
+        'AUTH_PARAMS': {
+            'access_type': 'online',
+        }
+    }
+}
 
