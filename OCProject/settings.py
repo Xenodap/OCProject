@@ -1,4 +1,6 @@
 import os
+from datetime import timedelta
+
 from django.conf.locale.ko import formats as ko_formats
 from whitenoise import middleware
 
@@ -27,9 +29,15 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
 
     'board',
+    # restframework
     'rest_framework',
+    'rest_framework_simplejwt.token_blacklist',
+    'corsheaders',
+    'api',
+
 
     'django.contrib.sites',
+    # 소셜로그인
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
@@ -46,10 +54,13 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.TokenAuthentication',
+        # 추가
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 10
 }
+
 
 AUTHENTICATION_BACKENDS=[
     'django.contrib.auth.backends.ModelBackend',
@@ -69,6 +80,7 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     # 소셜로그인
     'allauth.account.middleware.AccountMiddleware',
+    'corsheaders.middleware.CorsMiddleware', # 추가
 ]
 
 ROOT_URLCONF = "OCProject.urls"
@@ -95,7 +107,39 @@ ACCOUNT_LOGOUT_ON_GET=True
 
 WSGI_APPLICATION = "OCProject.wsgi.application"
 
+# JWT 토큰 설정입니다.
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5), # ACCESS Token의 유효기간
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=50), # Refresh 토큰의 유효기간
+    'ROTATE_REFRESH_TOKENS': True,
+    'BLACKLIST_AFTER_ROTATION': True,
+    'UPDATE_LAST_LOGIN': False,
 
+    'ALGORITHM': 'HS256',
+
+    'VERIFYING_KEY': None,
+    'AUDIENCE': None,
+    'ISSUER': None,
+    'JWK_URL': None,
+    'LEEWAY': 0,
+
+    'AUTH_HEADER_TYPES': ('Bearer',),
+    'AUTH_HEADER_NAME': 'HTTP_AUTHORIZATION',
+    'USER_ID_FIELD': 'id',
+    'USER_ID_CLAIM': 'user_id',
+    'USER_AUTHENTICATION_RULE': 'rest_framework_simplejwt.authentication.default_user_authentication_rule',
+
+    'AUTH_TOKEN_CLASSES': ('rest_framework_simplejwt.tokens.AccessToken',),
+    'TOKEN_TYPE_CLAIM': 'token_type',
+    'TOKEN_USER_CLASS': 'rest_framework_simplejwt.models.TokenUser',
+
+    'JTI_CLAIM': 'jti',
+
+    'SLIDING_TOKEN_REFRESH_EXP_CLAIM': 'refresh_exp',
+    'SLIDING_TOKEN_LIFETIME': timedelta(minutes=5),
+    'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),
+}
+CORS_ALLOW_ALL_ORIGINS = True
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
