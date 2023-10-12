@@ -2,12 +2,19 @@ from django.contrib import admin
 from django.urls import path, include
 from board import views
 
-
+from rest_framework_simplejwt.views import (
+    TokenRefreshView,
+)
 urlpatterns = [
     path('',views.home),
     path('admin/', admin.site.urls),
     # restapi 설정하기
     path('api/',include('rest_framework.urls')),
+    # path('token/', views.MyTokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    # path('register/', views.RegisterView.as_view(), name='auth_register'),
+    path('', views.getRoutes),
+
 
 
     path('signup/',views.signup),
