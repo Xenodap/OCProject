@@ -23,3 +23,5 @@ class comment(models.Model):
     writer=models.CharField(null=False,max_length=50)
     content=models.TextField(null=False)
     post_date=models.DateTimeField(default=datetime.now,blank=True)
+
+

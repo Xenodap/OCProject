@@ -15,8 +15,7 @@ SECRET_KEY = "django-insecure-v!790rt+)-zin6u@vp4#6om6yzv)3#0-)c+%gykl&fxe9t-v38
 
 DEBUG = True
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
@@ -71,16 +70,17 @@ SITE_ID=4
 LOGIN_REDIRECT_URL="/"
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',  # 추가
+    'django.middleware.common.CommonMiddleware',
+
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
-    "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     # 소셜로그인
     'allauth.account.middleware.AccountMiddleware',
-    'corsheaders.middleware.CorsMiddleware', # 추가
 ]
 
 ROOT_URLCONF = "OCProject.urls"
@@ -139,7 +139,8 @@ SIMPLE_JWT = {
     'SLIDING_TOKEN_LIFETIME': timedelta(minutes=5),
     'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),
 }
-CORS_ALLOW_ALL_ORIGINS = True
+CORS_ORIGIN_WHITELIST = ('http://127.0.0.1:3000', 'http://localhost:3000')
+CORS_ALLOW_CREDENTIALS = True
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
