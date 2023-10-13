@@ -23,6 +23,7 @@ urlpatterns = [
     path('login_form/',views.login_form),
     path('logout/',views.logout),
     path('list/',views.list),
+    path('test/', views.lists, name='lists'),
     path('write/',views.write),
     path('insert/',views.insert),
     path('download/',views.download),

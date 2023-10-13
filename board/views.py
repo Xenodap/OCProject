@@ -1,3 +1,5 @@
+import json
+
 from django.contrib import auth
 from django.contrib.auth.models import User
 from django.http import HttpResponse
@@ -11,7 +13,7 @@ from django.shortcuts import render
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from django.http import JsonResponse
-from api.serializer import MyTokenObtainPairSerializer, RegisterSerializer
+# from api.serializer import MyTokenObtainPairSerializer, RegisterSerializer
 
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework import generics
@@ -68,6 +70,30 @@ def list(request):#게시판 목록
     boardList=Board.objects.all().order_by("-idx")
     return render(request,"board/list.html",
                   {"boardList":boardList,"boardCount":boardCount})
+
+# 1013 추가 model을 json 형태로
+def boardToJson(board):
+    jsonData = []
+    for data in board:
+        dictionary = {
+            "writer": data.writer,
+            "title": data.title,
+            "hit" : data.hit,
+            "content":data.content,
+            "post_date" : data.post_date.strftime("%Y-%m-%d %H:%M:%S"),
+            "filename" : data.filename,
+            "filesize": data.filesize,
+            "down" : data.down
+        }
+        jsonData.append(dictionary)
+
+    return json.dumps(jsonData)
+
+def lists(request):
+    boardData = Board.objects.all()
+    boardJsonData = boardToJson(boardData)
+
+    return HttpResponse(boardJsonData, content_type='application/json')
 
 def write(request):#글쓰기
     return render(request,"board/write.html")
@@ -177,3 +203,4 @@ def getRoutes(request):
         'api/token/refresh',
     ]
     return Response(routes)
+
