@@ -71,11 +71,12 @@ def list(request):#게시판 목록
     return render(request,"board/list.html",
                   {"boardList":boardList,"boardCount":boardCount})
 
-# 1013 추가 model을 json 형태로
+# 1013 추가 model을 json 형태로 변경
 def boardToJson(board):
     jsonData = []
     for data in board:
         dictionary = {
+            "idx" : data.idx,
             "writer": data.writer,
             "title": data.title,
             "hit" : data.hit,
@@ -88,11 +89,28 @@ def boardToJson(board):
         jsonData.append(dictionary)
 
     return json.dumps(jsonData)
+# 상세페이지 정보를 json으로
+def boardDetailToJson(board):
 
-def lists(request):
+    if board == None:
+        return None
+
+    dictionary = {}
+    dictionary["idx"] = board.idx
+    dictionary["title"] = board.title
+    dictionary["hit"] = board.hit
+    dictionary["content"] = board.content
+
+    return json.dumps(dictionary)
+def lists(request): # list 목록 json 형태로 받아옴
     boardData = Board.objects.all()
     boardJsonData = boardToJson(boardData)
 
+    return HttpResponse(boardJsonData, content_type='application/json')
+
+def listDetail(request, page):
+    boardData = Board.objects.get(idx = page)
+    boardJsonData = boardDetailToJson(boardData)
     return HttpResponse(boardJsonData, content_type='application/json')
 
 def write(request):#글쓰기

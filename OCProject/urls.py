@@ -5,6 +5,7 @@ from board import views
 from rest_framework_simplejwt.views import (
     TokenRefreshView,
 )
+
 urlpatterns = [
     path('',views.home),
     path('admin/', admin.site.urls),
@@ -24,6 +25,7 @@ urlpatterns = [
     path('logout/',views.logout),
     path('list/',views.list),
     path('test/', views.lists, name='lists'),
+    path('list/<int:page>/',views.listDetail),
     path('write/',views.write),
     path('insert/',views.insert),
     path('download/',views.download),
