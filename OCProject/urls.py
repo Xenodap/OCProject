@@ -20,6 +20,7 @@ urlpatterns = [
 
     path('signup/',views.signup),
     path('signup_form/',views.signup_form),
+    path('signupTest/', views.signupTest),
     path('login/',views.login),
     path('login_form/',views.login_form),
     path('logout/',views.logout),
