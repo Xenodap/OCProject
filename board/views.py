@@ -21,7 +21,6 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 
 UPLOAD_DIR='c:/ocupload/'
 
-
 def login(request):#로그인
     if request.method=="POST":
         username=request.POST['username']
@@ -56,8 +55,36 @@ def signup(request):#회원가입
             password=request.POST['password']
             email=request.POST['email']
             user=User.objects.create_user(username,email,password)
-            return redirect("/login_form")
+            return redirect("/login_form/")
     return render(request,'user/signup.html')
+
+# 로그인 테스트
+def signin(request):#로그인
+    if request.method=="POST":
+        username=request.POST['username']
+        password=request.POST['password']
+        user=auth.authenticate(request,username=username,password=password)
+
+        if user is not None:
+            auth.login(request,user)
+            return redirect("/")
+        else:
+            return render(request,'user/login.html',{
+                'error':'username or password is incorrect'
+            })
+
+    else:
+        return render(request,'user/login.html')
+
+#  유저 등록 테스트
+def signupTest(request):
+    if request.method=='POST':
+        if request.POST['password']==request.POST['password2']:
+            username=request.POST['username']
+            password=request.POST['password']
+            email=request.POST['email']
+            user=User.objects.create_user(username, email, password)
+        return JsonResponse({'message': 'User registered successfully'})
 
 def logout(request):#로그아웃
     if request.user.is_authenticated:
@@ -116,8 +143,6 @@ def listDetail(request, page):
 def write(request):#글쓰기
     return render(request,"board/write.html")
 
-
-
 @csrf_exempt#저장
 def insert(request):
     fname=''
@@ -137,7 +162,6 @@ def insert(request):
     dto.save()
     print(dto)
     return redirect('/list')
-
 
 def download(request):
     id=request.GET['idx']
