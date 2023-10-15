@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django.urls import path, include
 from board import views
+from django.template.loader import render_to_string
 
 from rest_framework_simplejwt.views import (
     TokenRefreshView,
@@ -19,8 +20,10 @@ urlpatterns = [
 
 
     path('signup/',views.signup),
+    path('signin/', views.signin),
     path('signup_form/',views.signup_form),
-    path('signupTest/', views.signupTest),
+    path('signupTest/', views.signupTest, name = "signupTest"),
+    path('csrf_token/', views.csrf_token_view, name='csrf_token_view'),
     path('login/',views.login),
     path('login_form/',views.login_form),
     path('logout/',views.logout),
