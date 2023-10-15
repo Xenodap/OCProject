@@ -4,10 +4,12 @@ from django.contrib import auth
 from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
-from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.csrf import csrf_exempt, ensure_csrf_cookie
 from board.models import Board, comment
 from urllib.parse import quote
 import os
+from django.middleware.csrf import get_token
+
 # rest api 추가
 from django.shortcuts import render
 from rest_framework.decorators import api_view
@@ -20,6 +22,11 @@ from rest_framework import generics
 from rest_framework.permissions import AllowAny, IsAuthenticated
 
 UPLOAD_DIR='c:/ocupload/'
+
+# 토큰값
+def csrf_token_view(request):
+    csrf_token = get_token(request)
+    return JsonResponse({'csrf_token': csrf_token})
 
 def login(request):#로그인
     if request.method=="POST":
@@ -61,13 +68,13 @@ def signup(request):#회원가입
 # 로그인 테스트
 def signin(request):#로그인
     if request.method=="POST":
-        username=request.POST['username']
-        password=request.POST['password']
-        user=auth.authenticate(request,username=username,password=password)
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = auth.authenticate(request, username=username, password=password)
 
         if user is not None:
             auth.login(request,user)
-            return redirect("/")
+            return print("틀림")
         else:
             return render(request,'user/login.html',{
                 'error':'username or password is incorrect'
@@ -77,14 +84,26 @@ def signin(request):#로그인
         return render(request,'user/login.html')
 
 #  유저 등록 테스트
+@ensure_csrf_cookie
 def signupTest(request):
-    if request.method=='POST':
-        if request.POST['password']==request.POST['password2']:
-            username=request.POST['username']
-            password=request.POST['password']
-            email=request.POST['email']
-            user=User.objects.create_user(username, email, password)
-        return JsonResponse({'message': 'User registered successfully'})
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        print(data.get('username'))
+        password = data.get('password')
+        password2 = data.get('password2')
+        if password == password2:
+            username = data.get('username')
+            email = data.get('email')
+            try:
+                user = User.objects.create_user(username, email, password)
+                return JsonResponse({'message': 'User registered successfully'})
+            except Exception as e:
+                return JsonResponse({'message': str(e)}, status=400)
+        else:
+            return JsonResponse({'message': 'Passwords do not match'}, status=400)
+    else:
+        return JsonResponse({'message': 'Invalid request method'}, status=400)
+
 
 def logout(request):#로그아웃
     if request.user.is_authenticated:
