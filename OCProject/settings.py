@@ -42,9 +42,11 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.naver',
+    'allauth.socialaccount.providers.google',
     'allauth.socialaccount.providers.kakao',
     'allauth.socialaccount.providers.facebook',
-    'allauth.socialaccount.providers.google',
+    'allauth.socialaccount.providers.github',
+
 
 ]
 REST_FRAMEWORK = {
@@ -69,6 +71,10 @@ AUTHENTICATION_BACKENDS=[
 
 SITE_ID=4
 LOGIN_REDIRECT_URL="/"
+ACCOUNT_EMAIL_REQUIRED=True
+ACCOUNT_EMAIL_VERIFICATION='none'
+
+
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',  # CORS 추가
@@ -101,9 +107,10 @@ TEMPLATES = [
     },
 ]
 
+
 SOCIALACCOUNT_LOGIN_ON_GET=True
-ACCOUNT_LOGOUT_REDIRECT_URL='/'
-ACCOUNT_LOGOUT_ON_GET=True
+# ACCOUNT_LOGOUT_REDIRECT_URL='/'
+# ACCOUNT_LOGOUT_ON_GET=True
 
 WSGI_APPLICATION = "OCProject.wsgi.application"
 
