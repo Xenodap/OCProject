@@ -3,14 +3,18 @@ import json
 from django.contrib import auth
 from django.contrib.auth.models import User
 from django.http import HttpResponse
+from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_exempt, ensure_csrf_cookie
+
+from board import bigdata
 from board.models import Board, comment
 from urllib.parse import quote
 import os
 from django.middleware.csrf import get_token
 
 # rest api 추가
+
 from django.shortcuts import render
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -46,6 +50,7 @@ def login(request):#로그인
         return render(request,'user/login.html')
 
 def home(request):#메인
+    bigdata.run_machine_learning()
     return render(request,'main.html')
 
 def login_form(request):#로그인 창
@@ -247,14 +252,6 @@ def update(request):
     dto_new.save()
     return redirect("/list/")
 
-# restapi
-# class MyTokenObtainPairView(TokenObtainPairView):
-#     serializer_class = MyTokenObtainPairSerializer
-#
-# class RegisterView(generics.CreateAPIView):
-#     queryset = User.objects.all()
-#     permission_classes = (AllowAny,)
-#     serializer_class = RegisterSerializer
 
 @api_view(['GET'])
 def getRoutes(request):
@@ -264,4 +261,7 @@ def getRoutes(request):
         'api/token/refresh',
     ]
     return Response(routes)
+
+
+
 

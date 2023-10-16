@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     'api',
 
 
+
     'django.contrib.sites',
     # 소셜로그인
     'allauth',
@@ -229,9 +230,9 @@ APPEND_SLASH = False
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = "static/"
+STATIC_URL = "/board/static/"
 
-STATIC_DIR=os.path.join(BASE_DIR,'static')
+STATIC_DIR=os.path.join(BASE_DIR,'board/static')
 
 STATICFILES_DIRS=[
     BASE_DIR/"board/static",
