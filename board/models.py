@@ -25,3 +25,4 @@ class comment(models.Model):
     post_date=models.DateTimeField(default=datetime.now,blank=True)
 
 
+

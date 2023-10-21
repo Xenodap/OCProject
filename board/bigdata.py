@@ -1,6 +1,8 @@
+import json
 import os.path
 
 import pandas as pd
+import pymysql
 import random
 import matplotlib.pyplot as plt
 from sklearn.preprocessing import MinMaxScaler
@@ -23,8 +25,15 @@ output_dim = 1
 learning_late = 0.1
 epochs = 1000
 
+
 def run_machine_learning():
-    data = pd.read_excel('C://Bigdata/OCproject/우럭_전처리데이터_7차.xlsx')
+    conn = pymysql.connect(host='localhost', user='root', password='1234', db='ocprojectdb', charset='utf8')
+    sql = 'select * from rockfish'
+
+    df = pd.read_sql_query(sql, conn)
+    df.to_csv('C://Bigdata/OCproject/ready_to_bigdata.csv', index=False)
+
+    data = pd.read_csv('C://Bigdata/OCproject/ready_to_bigdata.csv')
     data['date'] = data['년도'].str.replace('년', '') + '-' + data['월'].str.replace('월', '')
     data['date'] = pd.to_datetime(data['date'], format='%Y-%m')
     data.set_index('date', inplace=True)
@@ -192,6 +201,15 @@ def train_model(model, train_df, epochs=None, lr=None, verbos=10, patience=10):
                 break
     return model.eval(), train_hist
 
+def returnToJson(board):
+    jsonData = []
+    for data in board:
+        dictionary = {
+        #   우럭-통영-월-산지 리턴해야함
+        }
+        jsonData.append(dictionary)
+
+    return json.dumps(jsonData)
 
 def MAE(true, pred):
     return np.mean(np.abs(true-pred))
