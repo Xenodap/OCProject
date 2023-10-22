@@ -7,7 +7,8 @@ from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_exempt, ensure_csrf_cookie
 
-from board import bigdata
+from board import bigdata, future_rockfish_bigdata, future_flatfish_bigdata
+from board.future_flatfish_bigdata import flatfishJson
 from board.models import Board, comment
 from urllib.parse import quote
 import os
@@ -49,9 +50,25 @@ def login(request):#로그인
     else:
         return render(request,'user/login.html')
 
+
+
+
+
+
 def home(request):#메인
     bigdata.run_machine_learning()
+    future_rockfish_bigdata.run_machin_learning_rockfish()
+    future_flatfish_bigdata.run_machin_learning_flatfish()
+    datalist = []
+    datalist.append(flatfishJson(2022))
+    datalist.append(flatfishJson(2023))
+    datalist.append(flatfishJson(2024))
+    test(datalist)
+
     return render(request,'main.html')
+
+def test(datalist):
+    return HttpResponse(datalist, content_type='application/json')
 
 def login_form(request):#로그인 창
     return render(request,'user/login.html')
@@ -141,6 +158,8 @@ def boardToJson(board):
 
     return json.dumps(jsonData)
 # 상세페이지 정보를 json으로
+
+
 def boardDetailToJson(board):
 
     if board == None:
