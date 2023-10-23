@@ -191,8 +191,8 @@ def MAE(true, pred):
 
 def rockfishJson(year):
     conn = pymysql.connect(host='localhost', user='root', password='1234', db='ocprojectdb', charset='utf8')
-    sql = 'select 월,통영산지가격 from ocprojectdb.future_flatfish where 년도=%s'
-    flatfishJson=[]
+    sql = 'select 월,통영산지가격 from ocprojectdb.future_rockfish where 년도=%s'
+    rockfishJson=[]
     cursor=conn.cursor()
     cursor.execute(sql, year)
     conn.commit()
@@ -203,7 +203,7 @@ def rockfishJson(year):
             "월":data[0],
             "통영산지가격":data[1]
         }
-        flatfishJson.append(dictionary)
+        rockfishJson.append(dictionary)
     # conn.close()
 
-    return json.dumps(flatfishJson)
+    return json.dumps(rockfishJson)
