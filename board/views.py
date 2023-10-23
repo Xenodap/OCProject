@@ -64,8 +64,9 @@ def home(request):#메인
     datalist.append(flatfishJson(2023))
     datalist.append(flatfishJson(2024))
     test(datalist)
+    return HttpResponse(datalist,content_type="application/json")
 
-    return render(request,'main.html')
+    # return render(request,'main.html')
 
 def test(datalist):
     return HttpResponse(datalist, content_type='application/json')
