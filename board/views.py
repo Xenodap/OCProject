@@ -9,6 +9,7 @@ from django.views.decorators.csrf import csrf_exempt, ensure_csrf_cookie
 
 from board import bigdata, future_rockfish_bigdata, future_flatfish_bigdata
 from board.future_flatfish_bigdata import flatfishJson
+from board.future_rockfish_bigdata import rockfishJson
 from board.models import Board, comment
 from urllib.parse import quote
 import os
@@ -63,6 +64,9 @@ def home(request):#메인
     datalist.append(flatfishJson(2022))
     datalist.append(flatfishJson(2023))
     datalist.append(flatfishJson(2024))
+    datalist.append(rockfishJson(2022))
+    datalist.append(rockfishJson(2023))
+    datalist.append(rockfishJson(2024))
     test(datalist)
     return HttpResponse(datalist,content_type="application/json")
 

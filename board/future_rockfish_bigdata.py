@@ -41,9 +41,9 @@ def run_machin_learning_rockfish():
         data.drop('Date', axis=1, inplace=True)
 
     data = data[['출하량(톤)', '경남출하량(톤)', '양성물량(만 마리)',
-                    '통영수온(℃)', '총 수출금액(10000$)', '연어수입중량(kg)', '통영산지가격(원/kg)']]
+                    '통영수온(℃)', '총 수출금액(10000$)', '연어수입중량(kg)', '통영산지가격']]
 
-    data['통영산지가격(원/kg)'] = data['통영산지가격(원/kg)'].astype(int)
+    data['통영산지가격'] = data['통영산지가격'].astype(int)
 
     train_size = int(len(data) * 0.9)
     train_set = data[0:train_size]
@@ -188,3 +188,22 @@ def train_model(model, train_df, epochs=None, lr=None, verbos=10, patience=10):
 
 def MAE(true, pred):
     return np.mean(np.abs(true-pred))
+
+def rockfishJson(year):
+    conn = pymysql.connect(host='localhost', user='root', password='1234', db='ocprojectdb', charset='utf8')
+    sql = 'select 월,통영산지가격 from ocprojectdb.future_flatfish where 년도=%s'
+    flatfishJson=[]
+    cursor=conn.cursor()
+    cursor.execute(sql, year)
+    conn.commit()
+    conn.close()
+    datas = cursor.fetchall()
+    for data in datas:
+        dictionary={
+            "월":data[0],
+            "통영산지가격":data[1]
+        }
+        flatfishJson.append(dictionary)
+    # conn.close()
+
+    return json.dumps(flatfishJson)
